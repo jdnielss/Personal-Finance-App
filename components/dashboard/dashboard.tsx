@@ -56,7 +56,7 @@ export function Dashboard() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <PiggyBank className="h-8 w-8 text-blue-600 mr-3" />
-              <h1 className="text-xl font-semibold text-gray-900">Personal Finance Manager</h1>
+              <h1 className="text-xl font-semibold text-gray-900">Personal Finance</h1>
             </div>
 
             <div className="flex items-center space-x-4">

@@ -20,36 +20,14 @@ import {
 } from "@/components/ui/dialog"
 import { useCurrency } from "@/providers/currency-provider"
 import { useApi, apiCall } from "@/hooks/use-api"
+import { CurrencyInput } from "../ui/currency-input"
+import { CATEGORY_COLORS, DEFAULT_CATEGORIES } from "@/lib/constants"
 
 interface Budget {
   id: number
   category: string
   budgetAmount: number
   color: string
-}
-
-const DEFAULT_CATEGORIES = [
-  "Food & Dining",
-  "Transportation",
-  "Shopping",
-  "Entertainment",
-  "Bills & Utilities",
-  "Healthcare",
-  "Travel",
-  "Education",
-  "Other",
-]
-
-const CATEGORY_COLORS: { [key: string]: string } = {
-  "Food & Dining": "#ef4444",
-  Transportation: "#3b82f6",
-  Shopping: "#8b5cf6",
-  Entertainment: "#f59e0b",
-  "Bills & Utilities": "#10b981",
-  Healthcare: "#ec4899",
-  Travel: "#06b6d4",
-  Education: "#84cc16",
-  Other: "#6b7280",
 }
 
 export function BudgetManager() {
@@ -299,15 +277,7 @@ function BudgetForm({ budget, onSubmit, existingCategories }: BudgetFormProps) {
 
       <div className="space-y-2">
         <Label htmlFor="budget">Monthly Budget</Label>
-        <Input
-          id="budget"
-          type="number"
-          step="0.01"
-          placeholder={`0${getCurrencySymbol() === "Rp" ? "" : ".00"}`}
-          value={budgetAmount}
-          onChange={(e) => setBudgetAmount(e.target.value)}
-          required
-        />
+        <CurrencyInput id="balance" value={budgetAmount} onChange={setBudgetAmount} placeholder="0.00" required />
       </div>
 
       <Button type="submit" className="w-full">

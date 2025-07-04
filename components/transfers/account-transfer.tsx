@@ -21,6 +21,7 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { useCurrency } from "@/providers/currency-provider"
 import { useApi, apiCall } from "@/hooks/use-api"
+import { CurrencyInput } from "../ui/currency-input"
 
 interface Transfer {
   id: number
@@ -289,6 +290,7 @@ function TransferForm({ onSubmit, bankAccounts }: TransferFormProps) {
   const [amount, setAmount] = useState("")
   const [description, setDescription] = useState("")
   const [date, setDate] = useState(new Date().toISOString().split("T")[0])
+  const [customTransferFee, setCustomTransferFee] = useState("2500")
   const { formatCurrency } = useCurrency()
 
   const fromAccount = bankAccounts.find((acc) => acc.id === Number.parseInt(fromAccountId))
@@ -296,12 +298,12 @@ function TransferForm({ onSubmit, bankAccounts }: TransferFormProps) {
 
   // Calculate transfer fee based on account types
   const calculateTransferFee = (): number => {
+    if (customTransferFee) {
+      return Number.parseFloat(customTransferFee)
+    }
+
     if (!fromAccount || !toAccount) return 0
-
-    // Same bank = free
     if (fromAccount.bankName === toAccount.bankName) return 0
-
-    // Bank to bank = 6500
     if (
       (fromAccount.accountType === "checking" || fromAccount.accountType === "savings") &&
       (toAccount.accountType === "checking" || toAccount.accountType === "savings")
@@ -309,7 +311,6 @@ function TransferForm({ onSubmit, bankAccounts }: TransferFormProps) {
       return 6500
     }
 
-    // E-wallet transfers = 2500
     if (fromAccount.accountType === "ewallet" || toAccount.accountType === "ewallet") {
       return 2500
     }
@@ -388,20 +389,22 @@ function TransferForm({ onSubmit, bankAccounts }: TransferFormProps) {
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="amount">Amount (IDR)</Label>
-          <Input
-            id="amount"
-            type="number"
-            step="1000"
-            placeholder="100000"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            required
-          />
+          <CurrencyInput id="amount" value={amount} onChange={setAmount} placeholder="0.00" required />
         </div>
         <div className="space-y-2">
           <Label htmlFor="date">Date</Label>
           <Input id="date" type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
         </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="transferFee">Transfer Fee (IDR)</Label>
+        <CurrencyInput
+          id="transferFee"
+          value={customTransferFee}
+          onChange={setCustomTransferFee}
+          placeholder="2500"
+        />
       </div>
 
       <div className="space-y-2">

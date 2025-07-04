@@ -21,7 +21,7 @@ import {
 import { CurrencyInput } from "@/components/ui/currency-input"
 import { useCurrency } from "@/providers/currency-provider"
 import { useApi, apiCall } from "@/hooks/use-api"
-import { INDONESIAN_BANKS, E_WALLETS, ACCOUNT_TYPES, ACCOUNT_COLORS } from "@/lib/constants"
+import { BANKS, E_WALLETS, ACCOUNT_TYPES, ACCOUNT_COLORS } from "@/lib/constants"
 
 interface BankAccount {
   id: number
@@ -29,7 +29,7 @@ interface BankAccount {
   bankName: string
   accountNumber: string
   balance: number
-  accountType: "checking" | "savings" | "credit" | "ewallet"
+  type: "checking" | "savings" | "credit" | "ewallet"
   color: string
   isActive: boolean
 }
@@ -52,7 +52,7 @@ export function BankAccountManager() {
           bankName: accountData.bankName,
           accountNumber: accountData.accountNumber,
           balance: accountData.balance,
-          type: accountData.accountType,
+          type: accountData.type,
           color: accountData.color,
           isActive: accountData.isActive,
         },
@@ -83,7 +83,7 @@ export function BankAccountManager() {
           bankName: updatedAccount.bankName,
           accountNumber: updatedAccount.accountNumber,
           balance: updatedAccount.balance,
-          type: updatedAccount.accountType,
+          type: updatedAccount.type,
           color: updatedAccount.color,
           isActive: updatedAccount.isActive,
         },
@@ -134,7 +134,7 @@ export function BankAccountManager() {
           bankName: account.bankName,
           accountNumber: account.accountNumber,
           balance: account.balance,
-          type: account.accountType,
+          type: account.type,
           color: account.color,
           isActive: !account.isActive,
         },
@@ -172,14 +172,17 @@ export function BankAccountManager() {
 
   const accountList = accounts || []
   const totalBalance = accountList
-    .filter((acc) => acc.isActive && acc.accountType !== "credit")
+    .filter((acc) => acc.isActive && acc.type !== "credit")
     .reduce((sum, acc) => {
       const balance = typeof acc.balance === "string" ? Number.parseFloat(acc.balance) || 0 : acc.balance || 0
       return sum + balance
     }, 0)
   const activeAccounts = accountList.filter((acc) => acc.isActive)
-  const bankAccountsOnly = accountList.filter((acc) => acc.accountType === "checking" || acc.accountType === "savings")
-  const eWallets = accountList.filter((acc) => acc.accountType === "ewallet")
+  const bankAccountsOnly = accountList.filter((acc) => {
+    console.log(`Account ${acc.name} has type: ${acc.type}`); // Changed from acc.accountType to acc.type
+    return acc.type === "checking" || acc.type === "savings";
+  })
+  const eWallets = accountList.filter((acc) => acc.type === "ewallet")
 
   return (
     <div className="space-y-6">
@@ -192,7 +195,7 @@ export function BankAccountManager() {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-700">{formatCurrency(totalBalance)}</div>
+            <div className="text-2xl font-bold text-green-700">{showBalances ? formatCurrency(totalBalance) : "••••••"}</div>
             <p className="text-xs text-green-600 mt-1">Across all accounts</p>
           </CardContent>
         </Card>
@@ -293,7 +296,7 @@ export function BankAccountManager() {
                     <Badge variant={account.isActive ? "default" : "secondary"}>
                       {account.isActive ? "Active" : "Inactive"}
                     </Badge>
-                    <Badge variant="outline">{ACCOUNT_TYPES.find((t) => t.value === account.accountType)?.label}</Badge>
+                    <Badge variant="outline">{ACCOUNT_TYPES.find((t) => t.value === account.type)?.label}</Badge>
                   </div>
                 </div>
               </CardHeader>
@@ -317,7 +320,11 @@ export function BankAccountManager() {
                       <DialogHeader>
                         <DialogTitle>Edit Account</DialogTitle>
                       </DialogHeader>
-                      <AccountForm account={account} onSubmit={updateAccount} />
+                      <AccountForm account={account} onSubmit={(formData) => {
+                        if ('id' in formData) {
+                          updateAccount(formData as BankAccount);
+                        }
+                      }} />
                     </DialogContent>
                   </Dialog>
                   <Button variant="outline" size="sm" onClick={() => deleteAccount(account.id)}>
@@ -343,7 +350,7 @@ function AccountForm({ account, onSubmit }: AccountFormProps) {
   const [bankName, setBankName] = useState(account?.bankName || "")
   const [accountNumber, setAccountNumber] = useState(account?.accountNumber || "")
   const [balance, setBalance] = useState(account?.balance.toString() || "0")
-  const [type, setType] = useState(account?.accountType || "checking")
+  const [type, setType] = useState(account?.type || "checking")  // Changed from account?.accountType to account?.type
   const [color, setColor] = useState(account?.color || ACCOUNT_COLORS[0])
   const [isActive, setIsActive] = useState(account?.isActive ?? true)
 
@@ -357,7 +364,7 @@ function AccountForm({ account, onSubmit }: AccountFormProps) {
       bankName,
       accountNumber,
       balance: balanceValue,
-      accountType: type as BankAccount["accountType"],
+      type: type as BankAccount["type"],  // Changed from accountType to type
       color,
       isActive,
     }
@@ -369,7 +376,7 @@ function AccountForm({ account, onSubmit }: AccountFormProps) {
     }
   }
 
-  const bankOptions = type === "ewallet" ? E_WALLETS : INDONESIAN_BANKS
+  const bankOptions = type === "ewallet" ? E_WALLETS : BANKS
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -386,7 +393,7 @@ function AccountForm({ account, onSubmit }: AccountFormProps) {
 
       <div className="space-y-2">
         <Label htmlFor="type">Account Type</Label>
-        <Select value={type} onValueChange={(value) => setType(value as BankAccount["accountType"])}>
+        <Select value={type} onValueChange={(value) => setType(value as BankAccount["type"])}>
           <SelectTrigger>
             <SelectValue />
           </SelectTrigger>
@@ -440,9 +447,8 @@ function AccountForm({ account, onSubmit }: AccountFormProps) {
             <button
               key={colorOption}
               type="button"
-              className={`w-8 h-8 rounded-full border-2 ${
-                color === colorOption ? "border-gray-800" : "border-gray-300"
-              }`}
+              className={`w-8 h-8 rounded-full border-2 ${color === colorOption ? "border-gray-800" : "border-gray-300"
+                }`}
               style={{ backgroundColor: colorOption }}
               onClick={() => setColor(colorOption)}
             />

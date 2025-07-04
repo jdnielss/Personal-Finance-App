@@ -1,16 +1,6 @@
 "use client"
 import { useState } from "react"
 import { useAuth } from "./auth-provider"
-import { BankAccountManager } from "./bank-account-manager"
-import { ExpenseManager } from "./expense-manager"
-import { IncomeManager } from "./income-manager"
-import { BudgetManager } from "./budget-manager"
-import { InvestmentTracker } from "./investment-tracker"
-import { DataExport } from "./data-export"
-import { CashFlowAnalysis } from "./cash-flow-analysis"
-import { AccountTransfer } from "./account-transfer"
-import { ExpenseAnalytics } from "./expense-analytics"
-import { BudgetOverview } from "./budget-overview"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -35,6 +25,16 @@ import {
   ArrowLeftRight,
   PieChart,
 } from "lucide-react"
+import { BankAccountManager } from "./accounts/bank-account-manager"
+import { CashFlowAnalysis } from "./analytics/cash-flow-analysis"
+import { ExpenseAnalytics } from "./analytics/expense-analytics"
+import { BudgetManager } from "./budgets/budget-manager"
+import { BudgetOverview } from "./dashboard/budget-overview"
+import { ExpenseManager } from "./expenses/expense-manager"
+import { DataExport } from "./export/data-export"
+import { IncomeManager } from "./income/income-manager"
+import { InvestmentTracker } from "./investments/investment-tracker"
+import { AccountTransfer } from "./transfers/account-transfer"
 
 export function Dashboard() {
   const { user, logout } = useAuth()
@@ -56,7 +56,7 @@ export function Dashboard() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <PiggyBank className="h-8 w-8 text-blue-600 mr-3" />
-              <h1 className="text-xl font-semibold text-gray-900">Personal Finance Manager</h1>
+              <h1 className="text-xl font-semibold text-gray-900">Personal Finance</h1>
             </div>
 
             <div className="flex items-center space-x-4">

@@ -281,7 +281,13 @@ export function ExpenseManager() {
                           <DialogHeader>
                             <DialogTitle>Edit Expense</DialogTitle>
                           </DialogHeader>
-                          <ExpenseForm expense={expense} onSubmit={updateExpense} bankAccounts={activeAccounts} />
+                          <ExpenseForm
+                            expense={expense}
+                            onSubmit={(updatedExpense) => {
+                              updateExpense(updatedExpense as Expense);
+                            }}
+                            bankAccounts={activeAccounts}
+                          />
                         </DialogContent>
                       </Dialog>
                       <Button

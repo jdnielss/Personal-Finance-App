@@ -11,7 +11,6 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Personal Finance Manager",
   description: "Track expenses, manage budgets, and monitor investments",
-    generator: 'v0.dev'
 }
 
 export default function RootLayout({

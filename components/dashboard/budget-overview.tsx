@@ -25,7 +25,7 @@ interface BankAccount {
   balance: number
   isActive: boolean
   color: string
-  accountType: string
+  type: string
 }
 
 interface Expense {
@@ -74,7 +74,7 @@ export function BudgetOverview() {
 
     // Calculate total bank balance (excluding credit cards)
     const totalBalance = accounts
-      .filter((acc: BankAccount) => acc.accountType !== "credit" && acc.isActive)
+      .filter((acc: BankAccount) => acc.type !== "credit" && acc.isActive)
       .reduce((sum: number, acc: BankAccount) => sum + Number(acc.balance), 0)
 
     setTotalIncome(totalIncomeAmount)
@@ -107,10 +107,10 @@ export function BudgetOverview() {
 
   // Group accounts by type
   const bankAccountsOnly = (accounts || []).filter(
-    (acc) => acc.accountType === "checking" || acc.accountType === "savings",
+    (acc) => acc.type === "checking" || acc.type === "savings",
   )
-  const eWallets = (accounts || []).filter((acc) => acc.accountType === "ewallet")
-  const creditCards = (accounts || []).filter((acc) => acc.accountType === "credit")
+  const eWallets = (accounts || []).filter((acc) => acc.type === "ewallet")
+  const creditCards = (accounts || []).filter((acc) => acc.type === "credit")
 
   return (
     <div className="space-y-8">

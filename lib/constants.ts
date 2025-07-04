@@ -1,19 +1,9 @@
-export const INDONESIAN_BANKS = [
-  "BCA (Bank Central Asia)",
-  "Mandiri",
-  "BRI (Bank Rakyat Indonesia)",
-  "BNI (Bank Negara Indonesia)",
-  "CIMB Niaga",
+export const BANKS = [
+  "BCA",
   "Maybank",
   "Bank Jago",
-  "Jenius (BTPN)",
-  "Permata Bank",
-  "Danamon",
-  "OCBC NISP",
-  "Panin Bank",
-  "Bank Mega",
-  "UOB Indonesia",
-  "Standard Chartered",
+  "BRI",
+  "OKX Wallet",
 ]
 
 export const E_WALLETS = [
@@ -185,7 +175,18 @@ export const CATEGORY_COLORS: { [key: string]: string } = {
   Gold: "#eab308",
   "Time Deposit": "#06b6d4",
   "P2P Lending": "#ec4899",
-
-  // Default
   Other: "#6b7280",
 }
+
+
+export const DEFAULT_CATEGORIES = [
+  "Food & Dining",
+  "Transportation",
+  "Shopping",
+  "Entertainment",
+  "Bills & Utilities",
+  "Healthcare",
+  "Travel",
+  "Education",
+  "Other",
+]
