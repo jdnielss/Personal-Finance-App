@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/hooks/use-toast"
 import { Download, FileText, Calendar } from "lucide-react"
-import { useCurrency } from "./currency-provider"
+import { useCurrency } from "@/providers/currency-provider"
 
 export function DataExport() {
   const [exportType, setExportType] = useState<"expenses" | "income" | "budgets" | "investments" | "cashflow" | "all">(

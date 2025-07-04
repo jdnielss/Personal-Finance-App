@@ -8,7 +8,7 @@ import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertTriangle, TrendingUp, TrendingDown, CreditCard, Wallet, PieChart, BarChart3, Loader2 } from "lucide-react"
-import { useCurrency } from "./currency-provider"
+import { useCurrency } from "@/providers/currency-provider"
 import { useApi } from "@/hooks/use-api"
 
 interface BudgetData {

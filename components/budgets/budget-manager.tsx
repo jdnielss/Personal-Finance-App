@@ -18,7 +18,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { useCurrency } from "./currency-provider"
+import { useCurrency } from "@/providers/currency-provider"
 import { useApi, apiCall } from "@/hooks/use-api"
 
 interface Budget {

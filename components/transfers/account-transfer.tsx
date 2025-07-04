@@ -19,7 +19,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { useCurrency } from "./currency-provider"
+import { useCurrency } from "@/providers/currency-provider"
 import { useApi, apiCall } from "@/hooks/use-api"
 
 interface Transfer {

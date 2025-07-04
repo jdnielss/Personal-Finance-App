@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { PieChart, BarChart3, TrendingUp, TrendingDown, Calendar, Target } from "lucide-react"
-import { useCurrency } from "./currency-provider"
+import { useCurrency } from "@/providers/currency-provider"
 
 interface ExpenseData {
   category: string

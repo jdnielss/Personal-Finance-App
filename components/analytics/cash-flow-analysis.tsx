@@ -6,8 +6,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Progress } from "@/components/ui/progress"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { TrendingUp, TrendingDown, DollarSign, AlertTriangle, Target, PieChart, BarChart3, Loader2 } from "lucide-react"
-import { useCurrency } from "./currency-provider"
 import { useApi } from "@/hooks/use-api"
+import { useCurrency } from "@/providers/currency-provider"
 
 interface CashFlowData {
   month: string
@@ -436,9 +436,8 @@ export function CashFlowAnalysis() {
                     {/* Net Flow Indicator */}
                     <div className="flex items-center justify-center">
                       <div
-                        className={`text-xs px-2 py-1 rounded-full ${
-                          data.netFlow >= 0 ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-                        }`}
+                        className={`text-xs px-2 py-1 rounded-full ${data.netFlow >= 0 ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                          }`}
                       >
                         Net: {data.netFlow >= 0 ? "+" : ""}
                         {formatCurrency(data.netFlow)}
